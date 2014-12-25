@@ -437,6 +437,14 @@ public function <methodName>()
 
     private function hasProperty($property, ClassMetadataInfo $metadata)
     {
+        if (class_exists($metadata->name)) {
+            $reflClass = new \ReflectionClass($metadata->name);
+
+            if ($reflClass->hasProperty($property)) {
+                return true;
+            }
+        }
+
         return (
             isset($this->staticReflection[$metadata->name]) &&
             in_array($property, $this->staticReflection[$metadata->name]['properties'])
@@ -445,6 +453,14 @@ public function <methodName>()
 
     private function hasMethod($method, ClassMetadataInfo $metadata)
     {
+        if (class_exists($metadata->name)) {
+            $reflClass = new \ReflectionClass($metadata->name);
+
+            if ($reflClass->hasMethod($method)) {
+                return true;
+            }
+        }
+
         return (
             isset($this->staticReflection[$metadata->name]) &&
             in_array($method, $this->staticReflection[$metadata->name]['methods'])
@@ -931,13 +947,13 @@ public function <methodName>()
 
             case ClassMetadataInfo::GENERATOR_TYPE_UUID:
                 return 'UUID';
-                
+
             case ClassMetadataInfo::GENERATOR_TYPE_ALNUM:
                 return 'ALNUM';
 
             case ClassMetadataInfo::GENERATOR_TYPE_CUSTOM:
                 return 'CUSTOM';
-                
+
             case ClassMetadataInfo::GENERATOR_TYPE_NONE:
                 return 'NONE';
 
